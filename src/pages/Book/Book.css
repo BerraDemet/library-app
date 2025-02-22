@@ -1,0 +1,17 @@
+.even-row {
+  background-color: #ffffff;
+  border: 1px solid black;
+}
+
+.odd-row {
+  border: 1px solid black;
+}
+.table-row {
+  background-color: rgb(204, 210, 210);
+  display: flex;
+}
+.table-cell {
+  display: flex;
+
+  justify-content: center;
+}

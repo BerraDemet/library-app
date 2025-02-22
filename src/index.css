@@ -1,0 +1,11 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  overflow-x: hidden;
+  font-family: "Outfit", serif;
+}
+.page {
+  margin-left: 250px;
+}
