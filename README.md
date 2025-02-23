@@ -1,4 +1,4 @@
-To see live => https://magical-hummingbird-a7c39a.netlify.app/homepage 
+To see live => magical-hummingbird-a7c39a.netlify.app
 
 Library Management Application
 Description
