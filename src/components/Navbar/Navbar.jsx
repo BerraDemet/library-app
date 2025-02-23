@@ -22,9 +22,8 @@ const pages = [
 
 function Navbar() {
   return (
-    <>
-      {/* APP BAR */}
-      <AppBar sx={{ background: "#fff" }} position="static">
+    <div className="navbar">
+      <AppBar sx={{ background: "#fff" }} position="fixed">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
@@ -91,11 +90,8 @@ function Navbar() {
         </Box>
       </Box>
 
-      {/* PAGE CONTENT */}
-      <Box sx={{ marginLeft: 240, padding: "20px" }}>
-        {/* Main content goes here */}
-      </Box>
-    </>
+      <Box sx={{ marginLeft: 240, padding: "20px" }}></Box>
+    </div>
   );
 }
 

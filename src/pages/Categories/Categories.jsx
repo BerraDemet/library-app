@@ -30,7 +30,9 @@ const Categories = () => {
   useEffect(() => {
     const fetchCategoris = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/v1/categories");
+        const res = await axios.get(
+          import.meta.env.VITE_BASE_URL + "/api/v1/categories"
+        );
         setCategoris(res.data);
       } catch (error) {
         console.error("Error fetching Categoris:", error);
@@ -42,7 +44,7 @@ const Categories = () => {
   const handleCategoryPost = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8080/api/v1/categories",
+        import.meta.env.VITE_BASE_URL + "/api/v1/categories",
         newCategory
       );
       setCategoris((prevCategoris) => [...prevCategoris, res.data]);
@@ -54,7 +56,9 @@ const Categories = () => {
 
   const handleCategoryDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/api/v1/categories/${id}`);
+      await axios.delete(
+        import.meta.env.VITE_BASE_URL + `/api/v1/categories/${id}`
+      );
       setCategoris((prev) => prev.filter((Category) => Category.id !== id));
     } catch (error) {
       console.error("Error deleting Categori:", error);
@@ -68,7 +72,8 @@ const Categories = () => {
   const handleCategoryUpdate = async () => {
     try {
       const res = await axios.put(
-        `http://localhost:8080/api/v1/categories/${updateCategory.id}`,
+        import.meta.env.VITE_BASE_URL +
+          `/api/v1/categories/${updateCategory.id}`,
         updateCategory
       );
 
@@ -85,7 +90,7 @@ const Categories = () => {
   };
 
   return (
-    <div className="categories-container">
+    <div style={{ padding: "3rem" }}>
       <Typography variant="h4" style={{ textAlign: "center", margin: "20px" }}>
         Categories Management
       </Typography>

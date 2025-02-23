@@ -26,7 +26,9 @@ const Borrowing = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/v1/books");
+        const response = await axios.get(
+          import.meta.env.VITE_BASE_URL + "/api/v1/books"
+        );
         setBooks(response.data);
       } catch (error) {
         console.error("Error fetching books:", error);
@@ -62,7 +64,7 @@ const Borrowing = () => {
         if (book.stock > 0) {
           book.stock -= 1;
         } else {
-          setMessage(" No stock available.");
+          setMessage("No stock available.");
           return book;
         }
       }
@@ -70,14 +72,15 @@ const Borrowing = () => {
     });
 
     setBooks(updatedBooks);
+    setMessage("Book borrowed successfully!✅");
 
-    setMessage("Book borrowed successfully!✅ ");
-
-    setOpen(false);
+    setTimeout(() => {
+      setOpen(false);
+    }, 3000);
   };
 
   return (
-    <>
+    <div style={{ padding: "3rem" }}>
       <h2>Available Books</h2>
       <div className="book-container">
         {books.map((book, index) => (
@@ -149,7 +152,7 @@ const Borrowing = () => {
             onChange={handleChange}
             className="input-field"
           />
-          {/* Mesajı buraya ekleyin */}
+
           {message && <p className="message">{message}</p>}
         </DialogContent>
         <DialogActions>
@@ -161,7 +164,7 @@ const Borrowing = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </div>
   );
 };
 

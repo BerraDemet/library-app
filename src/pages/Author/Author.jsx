@@ -1,5 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Button, Grid, Paper, TextField } from "@mui/material";
+import {
+  Typography,
+  Button,
+  Grid,
+  Paper,
+  TextField,
+  TableContainer,
+  Table,
+  TableCell,
+  TableHead,
+  TableBody,
+  TableRow,
+  IconButton,
+} from "@mui/material";
 import axios from "axios";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -19,7 +32,9 @@ const Author = () => {
   useEffect(() => {
     const fetchAuthors = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/v1/authors");
+        const res = await axios.get(
+          import.meta.env.VITE_BASE_URL + "/api/v1/authors"
+        );
         setAuthors(res.data);
       } catch (error) {
         console.error(
@@ -34,10 +49,15 @@ const Author = () => {
 
   const handleAuthorPost = async () => {
     try {
+      console.log("Gönderilecek veri:", newAuthor);
+
       const res = await axios.post(
-        "http://localhost:8080/api/v1/authors",
-        newAuthor
+        import.meta.env.VITE_BASE_URL + "/api/v1/authors",
+        JSON.stringify(newAuthor),
+        { headers: { "Content-Type": "application/json" } }
       );
+
+      console.log("Eklenen yazar:", res.data);
       setAuthors((prev) => [...prev, res.data]);
       setNewAuthor(initialAuthor);
     } catch (error) {
@@ -50,7 +70,9 @@ const Author = () => {
 
   const handleAuthorDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/api/v1/authors/${id}`);
+      await axios.delete(
+        import.meta.env.VITE_BASE_URL + `/api/v1/authors/${id}`
+      );
       setAuthors((prev) => prev.filter((author) => author.id !== id));
     } catch (error) {
       console.error(
@@ -67,7 +89,7 @@ const Author = () => {
   const handleAuthorUpdate = async () => {
     try {
       const res = await axios.put(
-        `http://localhost:8080/api/v1/authors/${updateAuthor.id}`,
+        import.meta.env.VITE_BASE_URL + `/api/v1/authors/${updateAuthor.id}`,
         updateAuthor
       );
 
@@ -87,7 +109,7 @@ const Author = () => {
   };
 
   return (
-    <div className="author-container">
+    <div style={{ padding: "3rem" }}>
       <Typography variant="h4" style={{ textAlign: "center", margin: "20px" }}>
         Author Management
       </Typography>
@@ -98,8 +120,8 @@ const Author = () => {
           Add New Author
         </Typography>
         <Grid container spacing={2}>
-          {Object.keys(initialAuthor).map((key, index) => (
-            <Grid item xs={12} sm={6} key={key}>
+          {Object.keys(initialAuthor).map((key) => (
+            <Grid item md={4} key={key}>
               <TextField
                 fullWidth
                 label={key}
@@ -129,8 +151,8 @@ const Author = () => {
           Update Author
         </Typography>
         <Grid container spacing={2}>
-          {Object.keys(initialAuthor).map((key, index) => (
-            <Grid item xs={12} sm={6} key={key}>
+          {Object.keys(initialAuthor).map((key) => (
+            <Grid item md={4} key={key}>
               <TextField
                 fullWidth
                 label={key}
@@ -157,30 +179,41 @@ const Author = () => {
         </Button>
       </Paper>
 
-      {/* AUTHOR LIST */}
-      <div className="author-list">
-        {authors.map((author) => (
-          <Paper elevation={2} key={author.id} style={{ marginBottom: "10px" }}>
-            <div className="author-card">
-              <Typography variant="h6">{author.name}</Typography>
-              <Typography variant="body2">
-                Birthdate: {author.birthDate}
-              </Typography>
-              <Typography variant="body2">Country: {author.country}</Typography>
-              <div className="author-actions">
-                <ArrowUpwardIcon
-                  onClick={() => handleUpdateForm(author)}
-                  style={{ cursor: "pointer", marginRight: "10px" }}
-                />
-                <DeleteIcon
-                  onClick={() => handleAuthorDelete(author.id)}
-                  style={{ cursor: "pointer" }}
-                />
-              </div>
-            </div>
-          </Paper>
-        ))}
-      </div>
+      {/* AUTHOR LIST TABLE */}
+      <Paper elevation={3} style={{ padding: "20px" }}>
+        <Typography variant="h6" style={{ marginBottom: "10px" }}>
+          Authors List
+        </Typography>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">Name</TableCell>
+                <TableCell align="center">Birthdate</TableCell>
+                <TableCell align="center">Country</TableCell>
+                <TableCell align="center">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {authors.map((author) => (
+                <TableRow key={author.id}>
+                  <TableCell align="center">{author.name}</TableCell>
+                  <TableCell align="center">{author.birthDate}</TableCell>
+                  <TableCell align="center">{author.country}</TableCell>
+                  <TableCell align="center">
+                    <IconButton onClick={() => handleUpdateForm(author)}>
+                      <ArrowUpwardIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleAuthorDelete(author.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
     </div>
   );
 };

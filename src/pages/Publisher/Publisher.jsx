@@ -31,7 +31,9 @@ const Publisher = () => {
   useEffect(() => {
     const fetchPublishers = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/v1/publishers");
+        const res = await axios.get(
+          import.meta.env.VITE_BASE_URL + "/api/v1/publishers"
+        );
         setPublishers(res.data);
       } catch (error) {
         console.error("Error fetching publishers:", error);
@@ -43,7 +45,7 @@ const Publisher = () => {
   const handlePublisherPost = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8080/api/v1/publishers",
+        import.meta.env.VITE_BASE_URL + "/api/v1/publishers",
         newPublisher
       );
       setPublishers((prevPublishers) => [...prevPublishers, res.data]);
@@ -55,7 +57,9 @@ const Publisher = () => {
 
   const handlePublisherDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/api/v1/publishers/${id}`);
+      await axios.delete(
+        import.meta.env.VITE_BASE_URL + `/api/v1/publishers/${id}`
+      );
       setPublishers((prev) => prev.filter((publisher) => publisher.id !== id));
     } catch (error) {
       console.error("Error deleting publisher:", error);
@@ -69,7 +73,8 @@ const Publisher = () => {
   const handlePublisherUpdate = async () => {
     try {
       await axios.put(
-        `http://localhost:8080/api/v1/publishers/${updatePublisher.id}`,
+        import.meta.env.VITE_BASE_URL +
+          `/api/v1/publishers/${updatePublisher.id}`,
         updatePublisher
       );
 
@@ -91,14 +96,13 @@ const Publisher = () => {
         Publishers Management
       </Typography>
 
-      {/* NEW PUBLISHER */}
-      <Paper elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
+      <Paper elevation={3} style={{ padding: "10px", marginBottom: "20px" }}>
         <Typography variant="h6" style={{ marginBottom: "10px" }}>
           Add New Publisher
         </Typography>
         <Grid container spacing={2}>
           {Object.keys(initialPublisher).map((key) => (
-            <Grid item xs={12} sm={6} key={key}>
+            <Grid item md={4} key={key}>
               <TextField
                 fullWidth
                 label={key}
@@ -125,14 +129,13 @@ const Publisher = () => {
         </Button>
       </Paper>
 
-      {/* UPDATE PUBLISHER */}
       <Paper elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
         <Typography variant="h6" style={{ marginBottom: "10px" }}>
           Update Publisher
         </Typography>
         <Grid container spacing={2}>
           {Object.keys(initialPublisher).map((key) => (
-            <Grid item xs={12} sm={6} key={key}>
+            <Grid item md={4} key={key}>
               <TextField
                 fullWidth
                 label={key}
@@ -159,7 +162,6 @@ const Publisher = () => {
         </Button>
       </Paper>
 
-      {/* PUBLISHERS LIST */}
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
